@@ -1,7 +1,19 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/mail_config.php';
+// Config SMTP — si existe mail_config.php lo usa, si no usa los valores inline
+if (file_exists(__DIR__ . '/mail_config.php')) {
+    require_once __DIR__ . '/mail_config.php';
+} else {
+    define('SMTP_HOST',      'mail.paniaguaramirezsrl.com');
+    define('SMTP_PORT',      465);
+    define('SMTP_USER',      'info@paniaguaramirezsrl.com');
+    define('SMTP_PASS',      'Jlp@202607');
+    define('SMTP_FROM',      'info@paniaguaramirezsrl.com');
+    define('SMTP_FROM_NAME', 'Sitio Web Paniagua Ramírez');
+    define('MAIL_DESTINO',   'info@paniaguaramirezsrl.com');
+}
+
 require_once __DIR__ . '/vendor/phpmailer/src/Exception.php';
 require_once __DIR__ . '/vendor/phpmailer/src/PHPMailer.php';
 require_once __DIR__ . '/vendor/phpmailer/src/SMTP.php';
