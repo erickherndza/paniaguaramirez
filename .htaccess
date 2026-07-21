@@ -1,1 +1,97 @@
+# ================================================================
+# Paniagua Ramírez — Seguridad Apache
+# ================================================================
+
+# Redirigir HTTP → HTTPS
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# ── Cabeceras de seguridad ──────────────────────────────────────
+<IfModule mod_headers.c>
+    # Evitar que el sitio se cargue en <iframe> (clickjacking)
+    Header always set X-Frame-Options "DENY"
+    # Evitar sniffing de MIME type (drive-by downloads)
+    Header always set X-Content-Type-Options "nosniff"
+    # Filtro XSS del navegador (legacy)
+    Header always set X-XSS-Protection "1; mode=block"
+    # Solo referrer al mismo origen en HTTPS
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    # Bloquear cámara, micrófono, pagos, USB
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+    # HSTS — forzar HTTPS por 1 año + preload list
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    # Content Security Policy
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' fonts.googleapis.com cdn.jsdelivr.net cdnjs.cloudflare.com; font-src 'self' fonts.gstatic.com cdnjs.cloudflare.com data:; img-src 'self' data: images.unsplash.com; connect-src 'self'; form-action 'self'; base-uri 'self'; frame-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests;"
+    # Sin dominios cruzados (Flash, PDF legacy)
+    Header always set X-Permitted-Cross-Domain-Policies "none"
+    # Aislar contexto de navegación
+    Header always set Cross-Origin-Opener-Policy "same-origin"
+    Header always set Cross-Origin-Resource-Policy "same-site"
+    # Ocultar firma del servidor
+    Header always unset X-Powered-By
+    Header always unset Server
+</IfModule>
+
+# ── Deshabilitar listado de directorios ─────────────────────────
+Options -Indexes -MultiViews
+
+# ── Proteger archivos críticos ──────────────────────────────────
+<Files ".htaccess">
+    Require all denied
+</Files>
+
+<FilesMatch "\.(env|log|sql|bak|sh|md|yml|yaml|gitignore|lock|config)$">
+    Require all denied
+</FilesMatch>
+
+# ── Bloquear escáneres y bots maliciosos ────────────────────────
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTP_USER_AGENT} "" [OR]
+    RewriteCond %{HTTP_USER_AGENT} (ahrefsbot|semrushbot|mj12bot|dotbot|blexbot|masscan|nikto|sqlmap|acunetix|nessus|nmap|zgrab|dirbuster|hydra|medusa|python-urllib|libwww-perl|jndi) [NC]
+    RewriteRule ^ - [F,L]
+</IfModule>
+
+# ── Bloquear SQLi y XSS en query string ────────────────────────
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{QUERY_STRING} (union.*select|select.*from|insert.*into|drop.*table|delete.*from|exec\(|eval\() [NC,OR]
+    RewriteCond %{QUERY_STRING} (<script|javascript:|vbscript:|data:text/html|onload=|onerror=) [NC,OR]
+    RewriteCond %{QUERY_STRING} (\.\./|\.\.\%2F|%00|%0d%0a|base64_decode) [NC]
+    RewriteRule ^ - [F,L]
+</IfModule>
+
+# ── Bloquear path traversal ─────────────────────────────────────
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} (\.\./|\.\.\\|%2e%2e) [NC]
+    RewriteRule ^ - [F,L]
+</IfModule>
+
+# ── Anti-hotlinking de imágenes ─────────────────────────────────
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTP_REFERER} !^$
+    RewriteCond %{HTTP_REFERER} !^https?://(www\.)?paniaguaramirezsrl\.com [NC]
+    RewriteRule \.(jpg|jpeg|png|gif|webp|svg|ico)$ - [F,L]
+</IfModule>
+
+# ── Caché para assets estáticos ─────────────────────────────────
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg             "access plus 6 months"
+    ExpiresByType image/png              "access plus 6 months"
+    ExpiresByType image/webp             "access plus 6 months"
+    ExpiresByType image/x-icon           "access plus 1 year"
+    ExpiresByType text/css               "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+</IfModule>
+
+# ── Páginas de error personalizadas ─────────────────────────────
+ErrorDocument 400 /404.html
+ErrorDocument 403 /404.html
 ErrorDocument 404 /404.html
+ErrorDocument 500 /404.html
