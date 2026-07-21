@@ -43,4 +43,39 @@
     <priority>0.8</priority>
   </url>
 
+  <url>
+    <loc>https://www.paniaguaramirezsrl.com/blog-ley-30-26.html</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.paniaguaramirezsrl.com/blog-garante-prestamo.html</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.paniaguaramirezsrl.com/blog-transferencias-bancarias.html</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.paniaguaramirezsrl.com/blog-financiamiento-mipymes.html</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://www.paniaguaramirezsrl.com/blog-empresas-juveniles.html</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>
