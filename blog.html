@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es-DO">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/assets/img/favicon-192.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog Financiero — Paniagua Ramírez, Servicios y Soluciones Financieras, SRL</title>
+<!-- SEO primary -->
+<meta name="description" content="Artículos prácticos sobre tributación, contabilidad y finanzas para empresas en República Dominicana. Información actualizada sobre DGII, mipymes y más.">
+<meta name="keywords" content="blog contabilidad República Dominicana, artículos tributación DGII, finanzas empresas RD, ley 30-26 impuestos, mipymes financiamiento, contabilidad Santo Domingo">
+<meta name="author" content="Paniagua Ramírez, Servicios y Soluciones Financieras, SRL">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.paniaguaramirezsrl.com/blog.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.paniaguaramirezsrl.com/blog.html">
+<meta property="og:title" content="Blog Financiero — Paniagua Ramírez">
+<meta property="og:description" content="Artículos prácticos sobre tributación, contabilidad y finanzas para empresas en República Dominicana.">
+<meta property="og:image" content="https://www.paniaguaramirezsrl.com/assets/img/logo.png">
+<meta property="og:locale" content="es_DO">
+<meta property="og:site_name" content="Paniagua Ramírez, Servicios y Soluciones Financieras, SRL">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Blog Financiero — Paniagua Ramírez">
+<meta name="twitter:description" content="Artículos prácticos sobre tributación, contabilidad y finanzas para empresas en República Dominicana.">
+<meta name="twitter:image" content="https://www.paniaguaramirezsrl.com/assets/img/logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+<link rel="stylesheet" href="assets/css/style.css">
+
+<style>
+/* ── Blog-specific styles ─────────────────────────────────────── */
+
+/* Filters */
+.blog-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 28px 0 20px;
+}
+.filter-btn {
+  padding: 8px 20px;
+  border-radius: 50px;
+  border: 2px solid #DDEAF8;
+  background: #fff;
+  color: var(--text-dark);
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s;
+}
+.filter-btn:hover,
+.filter-btn.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+
+/* Cards */
+.blog-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(28,92,168,.07);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform .25s, box-shadow .25s;
+}
+.blog-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 36px rgba(28,92,168,.13);
+}
+.blog-card-img {
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+.blog-card-img-sm  { height: 210px; }
+.blog-card-img-feat { height: 320px; }
+
+.blog-card-body {
+  padding: 26px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Category badges */
+.badge-tributacion   { background: #1C5CA8; color: #fff; }
+.badge-finanzas      { background: #1a7a4a; color: #fff; }
+.badge-financiamiento{ background: #b45309; color: #fff; }
+.badge-emprendimiento{ background: #6d28d9; color: #fff; }
+
+.blog-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 50px;
+  margin-bottom: 14px;
+}
+
+.blog-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-dark);
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+.blog-title-feat {
+  font-size: 22px;
+}
+
+.blog-excerpt {
+  font-size: 14px;
+  color: var(--text-body);
+  line-height: 1.7;
+  flex: 1;
+  margin-bottom: 20px;
+}
+
+.blog-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12.5px;
+  color: #9aabbb;
+  margin-bottom: 18px;
+}
+.blog-meta i { font-size: 11px; }
+
+.blog-source {
+  font-size: 12px;
+  color: #9aabbb;
+  border-top: 1px solid #edf2f7;
+  padding-top: 14px;
+  margin-top: auto;
+}
+.blog-source a {
+  color: var(--blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+.blog-source a:hover { text-decoration: underline; }
+
+.btn-leer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--blue);
+  text-decoration: none;
+  margin-bottom: 16px;
+  transition: gap .2s;
+}
+.btn-leer:hover { gap: 10px; color: var(--blue-dark); }
+
+/* Hidden filtered cards */
+.blog-card-wrap.hidden { display: none; }
+
+/* CTA strip */
+.blog-cta {
+  background: var(--navy);
+  padding: 60px 0;
+  text-align: center;
+  color: #fff;
+}
+.blog-cta h2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.blog-cta p {
+  font-size: 15px;
+  opacity: .82;
+  max-width: 500px;
+  margin: 0 auto 28px;
+}
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+      <i class="fa-solid fa-phone me-1"></i> <a href="tel:+18298013142">+1 (829) 801-3142</a>
+      <span class="divider">|</span>
+      <i class="fa-solid fa-envelope me-1"></i> <a href="mailto:paniaguaramirezservicios@gmail.com">paniaguaramirezservicios@gmail.com</a>
+    </div>
+    <div class="social">
+      <span class="d-none d-md-inline">Lun – Vie, 8:00 am – 5:00 pm</span>
+      <a href="https://www.facebook.com/paniaguaramirezsrl" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/paniaguaramirezsrl" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://wa.me/18298013142" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+    </div>
+  </div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <img src="assets/img/logo.png" alt="Paniagua Ramírez" class="nav-logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+      <ul class="navbar-nav align-items-lg-center gap-lg-1">
+        <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="servicios.html">Servicios</a></li>
+        <li class="nav-item"><a class="nav-link" href="nosotros.html">Nosotros</a></li>
+        <li class="nav-item"><a class="nav-link" href="proceso.html">Cómo trabajamos</a></li>
+        <li class="nav-item"><a class="nav-link active" href="blog.html">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="contacto.html">Contacto</a></li>
+        <li class="nav-item ms-lg-2">
+          <a class="btn btn-navy rounded-1" href="https://wa.me/18298013142?text=Hola%2C%20quisiera%20una%20consulta%20sobre%20sus%20servicios%20contables." target="_blank" rel="noopener">Consulta gratis</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Page hero -->
+<section class="page-hero">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-3">
+      <ol class="breadcrumb mb-0" style="background:none;padding:0;font-size:13px;">
+        <li class="breadcrumb-item"><a href="/" style="color:rgba(255,255,255,.7);text-decoration:none;">Inicio</a></li>
+        <li class="breadcrumb-item active" style="color:#fff;">Blog</li>
+      </ol>
+    </nav>
+    <h1 class="page-hero-title">Blog y Recursos Financieros</h1>
+    <p class="page-hero-sub">Artículos prácticos sobre tributación, contabilidad y finanzas para empresas en República Dominicana</p>
+  </div>
+</section>
+
+<!-- Filters -->
+<div style="border-bottom:1px solid #E8EFF8;background:#fff;">
+  <div class="container">
+    <div class="blog-filters">
+      <button class="filter-btn active" data-filter="todos">Todos</button>
+      <button class="filter-btn" data-filter="tributacion">Tributación</button>
+      <button class="filter-btn" data-filter="finanzas">Finanzas</button>
+      <button class="filter-btn" data-filter="financiamiento">Financiamiento</button>
+      <button class="filter-btn" data-filter="emprendimiento">Emprendimiento</button>
+    </div>
+  </div>
+</div>
+
+<!-- Blog grid -->
+<section class="section-pad" style="background:var(--ice);">
+  <div class="container">
+
+    <!-- Row 1: featured + side -->
+    <div class="row g-4 mb-4">
+
+      <!-- Artículo 1 — Destacado: Ley 30-26 -->
+      <div class="col-lg-8 blog-card-wrap" data-cat="tributacion">
+        <div class="blog-card">
+          <img
+            src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=900&q=80"
+            alt="Documentos fiscales y calculadora"
+            class="blog-card-img blog-card-img-feat">
+          <div class="blog-card-body">
+            <span class="blog-badge badge-tributacion">Tributación</span>
+            <h2 class="blog-title blog-title-feat">Ley 30-26: Los beneficios tributarios que debe conocer si tiene una empresa en República Dominicana</h2>
+            <p class="blog-excerpt">La Dirección General de Impuestos Internos (DGII) destacó que la Ley 30-26 introduce incentivos fiscales significativos que reducen la carga tributaria de las empresas dominicanas. Entre los cambios más relevantes: los recargos por mora se reducen al 3% con tope del 100% del capital adeudado, se elimina el impuesto de constitución de sociedades a partir de 2027, y las microempresas con ingresos menores a RD$11,985,137 quedan exentas de pagos a cuenta. Además, se amplían las exenciones de impuesto sucesoral hasta RD$2 millones para herederos directos y se establece una amnistía fiscal vigente hasta el 31 de diciembre de 2026 para cuentas morosas.</p>
+            <div class="blog-meta">
+              <span><i class="fa-regular fa-calendar me-1"></i> 17 de julio, 2026</span>
+              <span><i class="fa-regular fa-clock me-1"></i> 4 min de lectura</span>
+            </div>
+            <a class="btn-leer" href="https://eldinero.com.do/372826/dgii-destaca-beneficios-de-la-ley-30-26-para-impulsar-inversion/" target="_blank" rel="noopener">
+              Leer artículo completo <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <div class="blog-source">
+              <i class="fa-solid fa-newspaper me-1"></i> Fuente: <a href="https://eldinero.com.do/372826/dgii-destaca-beneficios-de-la-ley-30-26-para-impulsar-inversion/" target="_blank" rel="noopener">elDinero.com.do</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Artículo 2 — Garante de préstamo -->
+      <div class="col-lg-4 blog-card-wrap" data-cat="finanzas">
+        <div class="blog-card">
+          <img
+            src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&q=80"
+            alt="Firma de contrato de préstamo"
+            class="blog-card-img blog-card-img-sm">
+          <div class="blog-card-body">
+            <span class="blog-badge badge-finanzas">Finanzas</span>
+            <h2 class="blog-title">El costo oculto de decir «sí» para ser garante de un préstamo</h2>
+            <p class="blog-excerpt">Avalar una deuda ajena puede comprometer su patrimonio, historial crediticio y hasta sus relaciones familiares. Si el deudor principal incumple, usted responde con sus propios bienes y su acceso a crédito futuro queda limitado.</p>
+            <div class="blog-meta">
+              <span><i class="fa-regular fa-calendar me-1"></i> 16 de julio, 2026</span>
+              <span><i class="fa-regular fa-clock me-1"></i> 3 min</span>
+            </div>
+            <a class="btn-leer" href="https://eldinero.com.do/372463/el-costo-oculto-de-decir-si-para-ser-garante-de-un-prestamo/" target="_blank" rel="noopener">
+              Leer artículo completo <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <div class="blog-source">
+              <i class="fa-solid fa-newspaper me-1"></i> Fuente: <a href="https://eldinero.com.do/372463/el-costo-oculto-de-decir-si-para-ser-garante-de-un-prestamo/" target="_blank" rel="noopener">elDinero.com.do</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /row 1 -->
+
+    <!-- Row 2: tres iguales -->
+    <div class="row g-4">
+
+      <!-- Artículo 3 — 0.2% transferencias -->
+      <div class="col-lg-4 blog-card-wrap" data-cat="tributacion">
+        <div class="blog-card">
+          <img
+            src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600&q=80"
+            alt="Banca digital y transferencias electrónicas"
+            class="blog-card-img blog-card-img-sm">
+          <div class="blog-card-body">
+            <span class="blog-badge badge-tributacion">Tributación</span>
+            <h2 class="blog-title">¿A quiénes afecta más el 0.2% en transferencias bancarias?</h2>
+            <p class="blog-excerpt">La Ley 30-26 elevó el impuesto a transferencias electrónicas del 0.15% al 0.20%. Aunque el incremento parece pequeño, las grandes empresas con cientos de transacciones diarias son quienes absorben el mayor impacto. El tributo generó RD$6,873 millones solo entre enero y abril de 2026.</p>
+            <div class="blog-meta">
+              <span><i class="fa-regular fa-calendar me-1"></i> 9 de julio, 2026</span>
+              <span><i class="fa-regular fa-clock me-1"></i> 3 min</span>
+            </div>
+            <a class="btn-leer" href="https://eldinero.com.do/371513/a-quienes-afecta-mas-el-0-2-por-las-transferencias-bancarias/" target="_blank" rel="noopener">
+              Leer artículo completo <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <div class="blog-source">
+              <i class="fa-solid fa-newspaper me-1"></i> Fuente: <a href="https://eldinero.com.do/371513/a-quienes-afecta-mas-el-0-2-por-las-transferencias-bancarias/" target="_blank" rel="noopener">elDinero.com.do</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Artículo 4 — BID / mipymes -->
+      <div class="col-lg-4 blog-card-wrap" data-cat="financiamiento">
+        <div class="blog-card">
+          <img
+            src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&q=80"
+            alt="Reunión de negocios y financiamiento"
+            class="blog-card-img blog-card-img-sm">
+          <div class="blog-card-body">
+            <span class="blog-badge badge-financiamiento">Financiamiento</span>
+            <h2 class="blog-title">BID y Banco Central abren RD$100 millones para financiar mipymes dominicanas</h2>
+            <p class="blog-excerpt">El Banco Central y el BID acordaron canalizar US$100 millones a través del Bandex para financiar actividades productivas de micro, pequeñas y medianas empresas. El programa prioriza negocios exportadores y liderados por mujeres, con un fondo de garantía parcial de US$5 millones como capital inicial.</p>
+            <div class="blog-meta">
+              <span><i class="fa-regular fa-calendar me-1"></i> 21 de julio, 2026</span>
+              <span><i class="fa-regular fa-clock me-1"></i> 3 min</span>
+            </div>
+            <a class="btn-leer" href="https://eldinero.com.do/373117/el-bid-y-el-banco-central-potenciaran-financiamientos-a-mipymes-a-traves-del-bandex/" target="_blank" rel="noopener">
+              Leer artículo completo <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <div class="blog-source">
+              <i class="fa-solid fa-newspaper me-1"></i> Fuente: <a href="https://eldinero.com.do/373117/el-bid-y-el-banco-central-potenciaran-financiamientos-a-mipymes-a-traves-del-bandex/" target="_blank" rel="noopener">elDinero.com.do</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Artículo 5 — Empresas juveniles informales -->
+      <div class="col-lg-4 blog-card-wrap" data-cat="emprendimiento">
+        <div class="blog-card">
+          <img
+            src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?w=600&q=80"
+            alt="Joven emprendedor dominicano"
+            class="blog-card-img blog-card-img-sm">
+          <div class="blog-card-body">
+            <span class="blog-badge badge-emprendimiento">Emprendimiento</span>
+            <h2 class="blog-title">El 95.9% de las empresas juveniles informales en RD opera solo en efectivo</h2>
+            <p class="blog-excerpt">Según la ANJE, el 65% de las mipymes lideradas por jóvenes opera en la informalidad, y casi la totalidad depende del efectivo. La alta carga tributaria relativa a su escala (22.3%) y los trámites del TSS (10.6%) son los principales obstáculos para formalizarse y crecer de manera sostenible.</p>
+            <div class="blog-meta">
+              <span><i class="fa-regular fa-calendar me-1"></i> 21 de julio, 2026</span>
+              <span><i class="fa-regular fa-clock me-1"></i> 3 min</span>
+            </div>
+            <a class="btn-leer" href="https://eldinero.com.do/373107/el-95-9-de-las-empresas-juveniles-informales-en-rd-depende-del-efectivo/" target="_blank" rel="noopener">
+              Leer artículo completo <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <div class="blog-source">
+              <i class="fa-solid fa-newspaper me-1"></i> Fuente: <a href="https://eldinero.com.do/373107/el-95-9-de-las-empresas-juveniles-informales-en-rd-depende-del-efectivo/" target="_blank" rel="noopener">elDinero.com.do</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /row 2 -->
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="blog-cta">
+  <div class="container">
+    <h2>¿Tiene dudas sobre cómo aplica esto a su empresa?</h2>
+    <p>Nuestros especialistas le orientan sin costo. Contáctenos hoy y reciba asesoría personalizada sobre impuestos, contabilidad y finanzas.</p>
+    <a href="https://wa.me/18298013142?text=Hola%2C%20leí%20un%20artículo%20del%20blog%20y%20quisiera%20una%20consulta." target="_blank" rel="noopener" class="btn btn-lg rounded-1 me-2 mb-2" style="background:#25D366;color:#fff;font-weight:700;">
+      <i class="fa-brands fa-whatsapp me-2"></i>Escribir por WhatsApp
+    </a>
+    <a href="contacto.html" class="btn btn-lg btn-outline-light rounded-1 mb-2" style="font-weight:700;">
+      Formulario de contacto
+    </a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="mb-3">
+          <img src="assets/img/icono-footer.png" alt="Icono Paniagua Ramírez" style="width:75px;height:75px;object-fit:contain;">
+        </div>
+        <p style="font-size:14px;max-width:34ch;">Auditoría, impuestos, asesoría financiera, organización de contabilidad y controles internos para empresas en República Dominicana.</p>
+      </div>
+      <div class="col-lg-2 col-md-4">
+        <h5>Servicios</h5>
+        <ul class="list-unstyled footer-links">
+          <li><a href="servicios.html">Auditoría</a></li>
+          <li><a href="servicios.html">Impuestos</a></li>
+          <li><a href="servicios.html">Asesoría Financiera</a></li>
+          <li><a href="servicios.html">Controles Internos</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-3 col-md-4">
+        <h5>Empresa</h5>
+        <ul class="list-unstyled footer-links">
+          <li><a href="nosotros.html">Nosotros</a></li>
+          <li><a href="proceso.html">Cómo trabajamos</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-3 col-md-4">
+        <h5>Contacto</h5>
+        <ul class="list-unstyled footer-links">
+          <li><a href="tel:+18298013142"><i class="fa-solid fa-phone me-2"></i>+1 (829) 801-3142</a></li>
+          <li><a href="mailto:paniaguaramirezservicios@gmail.com"><i class="fa-solid fa-envelope me-2"></i>paniaguaramirezservicios@gmail.com</a></li>
+          <li><i class="fa-solid fa-location-dot me-2"></i>Calle 4ta No. 6, 3er Nivel, Ensanche Kennedy, Santo Domingo, R.D.</li>
+          <li><a href="https://www.facebook.com/paniaguaramirezsrl" target="_blank" rel="noopener"><i class="fa-brands fa-facebook-f me-2"></i>Facebook</a></li>
+          <li><a href="https://www.instagram.com/paniaguaramirezsrl" target="_blank" rel="noopener"><i class="fa-brands fa-instagram me-2"></i>Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom d-flex justify-content-between flex-wrap gap-2">
+      <span>© 2026 Paniagua Ramírez, Servicios y Soluciones Financieras, SRL. Todos los derechos reservados.</span>
+      <span>Santo Domingo, República Dominicana</span>
+    </div>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/18298013142?text=Hola%2C%20le%20escribo%20desde%20el%20sitio%20web." target="_blank" rel="noopener" aria-label="WhatsApp">
+  <i class="fa-brands fa-whatsapp"></i>
+</a>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+(function () {
+  const btns  = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.blog-card-wrap');
+
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      btns.forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+
+      var filter = btn.dataset.filter;
+      cards.forEach(function (card) {
+        if (filter === 'todos' || card.dataset.cat === filter) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+}());
+</script>
+</body>
+</html>
