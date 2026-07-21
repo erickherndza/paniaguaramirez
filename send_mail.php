@@ -162,10 +162,32 @@ try {
 
     $mail->send();
     header('Location: gracias.html');
+    exit;
 
 } catch (Exception $e) {
-    // Log el error (solo en servidor, no exponer al usuario)
-    error_log('PHPMailer error: ' . $mail->ErrorInfo);
-    header('Location: contacto.html?error=envio');
+    error_log('PHPMailer SMTP fallo: ' . $mail->ErrorInfo . ' — usando mail()');
+
+    // Fallback: PHP mail() via sendmail del servidor
+    $asunto_fb  = '=?UTF-8?B?' . base64_encode('Consulta desde el sitio web — ' . $nombre) . '?=';
+    $cuerpo_fb  = "Nombre: {$nombre}\n";
+    $cuerpo_fb .= $empresa  ? "Empresa: {$empresa}\n"   : '';
+    $cuerpo_fb .= "Teléfono: {$telefono}\n";
+    $cuerpo_fb .= $correo   ? "Correo: {$correo}\n"     : '';
+    $cuerpo_fb .= $servicio ? "Servicio: {$servicio}\n" : '';
+    $cuerpo_fb .= "\nMensaje:\n{$mensaje}\n";
+    $cuerpo_fb .= "\n---\nIP: {$ip} · " . date('d/m/Y H:i') . " UTC";
+
+    $headers_fb = implode("\r\n", [
+        'MIME-Version: 1.0',
+        'Content-Type: text/plain; charset=UTF-8',
+        'From: ' . SMTP_FROM,
+        $correo ? 'Reply-To: ' . $correo : '',
+    ]);
+
+    if (mail(MAIL_DESTINO, $asunto_fb, $cuerpo_fb, $headers_fb)) {
+        header('Location: gracias.html');
+    } else {
+        header('Location: contacto.html?error=envio');
+    }
 }
 exit;
