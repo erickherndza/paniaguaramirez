@@ -20,31 +20,17 @@ jobs:
       - name: Descargar repositorio
         uses: actions/checkout@v4
 
-      - name: Instalar lftp
-        run: sudo apt-get install -y lftp
-
-      - name: Deploy FTP → Banahosting
-        env:
-          FTP_HOST: ${{ secrets.FTP_HOST }}
-          FTP_USER: ${{ secrets.FTP_USER }}
-          FTP_PASS: ${{ secrets.FTP_PASS }}
-          FTP_DIR:  ${{ secrets.FTP_DIR }}
-        run: |
-          echo "machine $FTP_HOST login $FTP_USER password $FTP_PASS" > ~/.netrc
-          chmod 600 ~/.netrc
-          lftp -c "
-            set ftp:ssl-allow no;
-            set net:timeout 60;
-            set net:max-retries 5;
-            open $FTP_HOST;
-            mirror --reverse --verbose \
-              --exclude '\.git/' \
-              --exclude '\.github/' \
-              --exclude '\.DS_Store' \
-              --exclude '\.nojekyll' \
-              --exclude 'CLAUDE\.md' \
-              --exclude '\.gitignore' \
-              ./ $FTP_DIR/;
-            quit
-          "
-          rm -f ~/.netrc
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          server-dir: ${{ secrets.FTP_DIR }}
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/CLAUDE.md
+            **/.DS_Store
+            **/.nojekyll
+            **/.gitignore
