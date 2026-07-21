@@ -23,7 +23,7 @@
 - HTML5 + CSS3 + Bootstrap 5.3.3
 - Font Awesome 6.5.1
 - Google Fonts: Poppins + Inter
-- PHP: `send_mail.php` — mail() nativo de cPanel (formulario → info@paniaguaramirezsrl.com)
+- PHP: `send_mail.php` — PHPMailer SMTP SSL 465 + fallback mail() (formulario → info@paniaguaramirezsrl.com)
 - Deploy: GitHub Actions (SamKirkland/FTP-Deploy-Action) → FTP → Banahosting (cPanel)
 
 ---
@@ -31,7 +31,7 @@
 ## REPOSITORIO Y HOSTING
 
 - **GitHub:** https://github.com/erickherndza/paniaguaramirez
-- **URL pública:** https://paniaguaramirezsrl.com/
+- **URL pública:** https://www.paniaguaramirezsrl.com/
 - **Branch:** main
 - **Remote local:** origin
 - **Servidor:** Banahosting cPanel — usuario `mybcfcli`
@@ -73,17 +73,26 @@ GitHub Actions despliega automáticamente vía FTP en ~2-3 min tras cada push.
 ├── contacto.html       — Formulario email (POST → send_mail.php) + info de contacto
 ├── gracias.html        — Página de confirmación tras envío del formulario
 ├── 404.html            — Página de error 404 (SEO optimizada)
-├── send_mail.php       — Mailer PHP: recibe POST, envía a info@paniaguaramirezsrl.com
-├── .htaccess           — ErrorDocument 404 /404.html
+├── send_mail.php       — PHPMailer SMTP 465 + fallback mail() → info@paniaguaramirezsrl.com
+├── mail_config.php     — GITIGNORED: credenciales SMTP (solo existe en servidor)
+├── .htaccess           — Seguridad completa: HTTPS+www redirect, CSP, HSTS, bots, hotlink
+├── robots.txt          — SEO crawling rules
+├── sitemap.xml         — 5 URLs con www prefix
+├── llms.txt            — GEO: descripción para modelos de IA
+├── google497cce19435d6b8d.html — Verificación Google Search Console
+├── .gitignore          — Excluye: mail_config.php, .DS_Store, *.zip, *.log
 ├── CLAUDE.md           — Este archivo
 └── assets/
     ├── css/
     │   └── style.css   — CSS compartido entre todas las páginas
     ├── js/
-    │   └── contacto.js — (vacío — formulario usa POST nativo a send_mail.php)
+    │   └── contacto.js — Setea form_ts timestamp (anti-bot) en DOMContentLoaded
     └── img/
         ├── logo.png          — Logo principal (navbar)
         ├── icono-footer.png  — Ícono 75×75px en footer
+        ├── favicon-32.png    — Favicon 32×32px generado de favicom.jpg
+        ├── favicon-192.png   — PWA icon 192×192px
+        ├── favicom.jpg       — Original del cliente
         ├── slider01.jpg      — Foto hero slide 1
         └── slider02.jpg      — Foto hero slide 2
 ```
@@ -104,11 +113,16 @@ Aparecen en **todas las páginas** (header topbar + footer columna Contacto):
 ## FORMULARIO DE CONTACTO
 
 - Archivo form: `contacto.html` — `<form action="send_mail.php" method="POST">`
-- Campos con `name=""`: nombre, empresa, telefono, correo, servicio, mensaje
-- Backend: `send_mail.php` → sanitiza, valida, envía con `mail()` a `info@paniaguaramirezsrl.com`
-- Éxito → redirige a `gracias.html`
-- Error → redirige a `contacto.html?error=campos` o `?error=envio`
-- **NUNCA usar `_external=True` en URLs** — guardar siempre rutas relativas
+- Campos: nombre, empresa, telefono, correo, servicio, mensaje + honeypot (website) + form_ts (hidden)
+- Anti-spam: honeypot + timestamp JS (>3s) + rate limit IP 3/hr via /tmp
+- Backend: `send_mail.php` → PHPMailer SMTP SSL 465 → fallback mail() → info@paniaguaramirezsrl.com
+- Credenciales SMTP en `mail_config.php` (gitignored, solo en servidor)
+- Éxito → redirige a `gracias.html` | Error → redirige a `contacto.html?error=<tipo>`
+
+**SMTP:**
+- Host: mail.paniaguaramirezsrl.com · Port: 465
+- User: info@paniaguaramirezsrl.com · Pass: en mail_config.php del servidor
+- Vendor: `vendor/phpmailer/src/` (PHPMailer.php, SMTP.php, Exception.php)
 
 ---
 
@@ -224,9 +238,28 @@ Aparecen en **todas las páginas** (header topbar + footer columna Contacto):
 7. Fix FTP_DIR: `paniaguaramirezsrl.com/` (relativo, no absoluto)
 8. Fix re-upload: `dangerous-clean-slate: true` para forzar subida completa
 
+
+### 2026-07-20 — Sesión 3: SEO, seguridad, formulario SMTP, www
+
+1. Nav/logo `href="index.html"` → `href="/"` en todas las páginas
+2. `sitemap.xml`, `robots.txt`, `llms.txt` creados (URLs con www)
+3. Favicon generado desde favicom.jpg: favicon-32.png, favicon-192.png, favicon.ico (Pillow)
+4. SEO completo en todas las páginas: meta description/keywords, canonical www, OG, Twitter Card, JSON-LD Schema.org (AccountingService)
+5. `.htaccess` reescrito: HTTPS+www redirect, CSP, HSTS 1 año + preload, bloqueo bots/SQLi/XSS/path traversal, hotlink protection, caché assets
+6. SRI agregado a Bootstrap CSS/JS y Font Awesome en todos los HTML
+7. `send_mail.php` reescrito: PHPMailer SMTP SSL 465 + fallback mail(), honeypot, timestamp, rate limiting
+8. `mail_config.php` creado (gitignored) + subido manualmente a cPanel
+9. `contacto.html`: honeypot field + form_ts hidden input
+10. `assets/js/contacto.js`: setea form_ts en DOMContentLoaded
+11. `vendor/phpmailer/src/`: PHPMailer descargado de GitHub
+12. `gracias.html` rediseñada: card profesional, logo, badge, mensaje humano, CTA WhatsApp
+13. `.gitignore` creado: mail_config.php, .DS_Store, *.zip, *.log
+14. `google497cce19435d6b8d.html`: verificación Google Search Console
+
 **Pendientes para próximas sesiones:**
-- Verificar que send_mail.php funciona en producción (PHP mail() de cPanel)
-- Agregar dirección física si el cliente la proporciona
+- DNS: verificar CNAME `www` en Banahosting DNS Zone Editor
+- Google Search Console: verificar + enviar sitemap
 - Fotos reales del equipo en sección Nosotros
 - Testimonios de clientes
 - Google Analytics / Meta Pixel
+- Dirección física si el cliente la proporciona
