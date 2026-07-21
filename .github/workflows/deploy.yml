@@ -23,6 +23,9 @@ jobs:
       - name: Instalar lftp
         run: sudo apt-get install -y lftp
 
+      - name: Mostrar directorio de trabajo
+        run: ls -la
+
       - name: Deploy FTP → Banahosting
         env:
           FTP_HOST: ${{ secrets.FTP_HOST }}
@@ -30,19 +33,21 @@ jobs:
           FTP_PASS: ${{ secrets.FTP_PASS }}
           FTP_DIR:  ${{ secrets.FTP_DIR }}
         run: |
-          lftp -u "$FTP_USER,$FTP_PASS" "ftp://$FTP_HOST" -e "
+          echo "machine $FTP_HOST login $FTP_USER password $FTP_PASS" > ~/.netrc
+          chmod 600 ~/.netrc
+          lftp -c "
+            set ftp:ssl-allow no;
             set net:timeout 60;
             set net:max-retries 5;
-            set net:reconnect-interval-base 5;
-            set ftp:ssl-allow yes;
-            set ssl:verify-certificate no;
-            set ftp:passive-mode yes;
-            mirror --reverse --verbose --no-perms --parallel=3 \
-              --exclude-glob .git/ \
-              --exclude-glob .github/ \
+            open $FTP_HOST;
+            mirror --reverse --verbose \
+              --exclude-glob .git \
+              --exclude-glob .github \
               --exclude-glob .DS_Store \
               --exclude-glob .nojekyll \
               --exclude-glob CLAUDE.md \
               --exclude-glob .gitignore \
               . $FTP_DIR;
-            quit"
+            quit
+          "
+          rm -f ~/.netrc
