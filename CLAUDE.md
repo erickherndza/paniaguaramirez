@@ -9,9 +9,12 @@
 **Paniagua Ramírez, Servicios y Soluciones Financieras, SRL**
 - Firma dominicana de auditoría, impuestos y asesoría financiera
 - Teléfono / WhatsApp: +1 (829) 801-3142
-- Correo: paniaguaramirezservicios@gmail.com
+- Correo cliente: paniaguaramirezservicios@gmail.com
+- Correo del sitio: info@paniaguaramirezsrl.com
 - Horario: Lun – Vie, 8:00 am – 5:00 pm
 - Ubicación: Santo Domingo, República Dominicana
+- Facebook: https://www.facebook.com/paniaguaramirezsrl
+- Instagram: https://www.instagram.com/paniaguaramirezsrl
 
 ---
 
@@ -20,18 +23,19 @@
 - HTML5 + CSS3 + Bootstrap 5.3.3
 - Font Awesome 6.5.1
 - Google Fonts: Poppins + Inter
-- Sin backend — sitio estático puro
-- Deploy: GitHub Actions → FTP → Banahosting (cPanel)
-- PHP: send_mail.php (mail() nativo de cPanel)
+- PHP: `send_mail.php` — mail() nativo de cPanel (formulario → info@paniaguaramirezsrl.com)
+- Deploy: GitHub Actions (SamKirkland/FTP-Deploy-Action) → FTP → Banahosting (cPanel)
 
 ---
 
-## REPOSITORIO Y URL
+## REPOSITORIO Y HOSTING
 
 - **GitHub:** https://github.com/erickherndza/paniaguaramirez
 - **URL pública:** https://paniaguaramirezsrl.com/
 - **Branch:** main
 - **Remote local:** origin
+- **Servidor:** Banahosting cPanel — usuario `mybcfcli`
+- **Document root:** `/home/mybcfcli/paniaguaramirezsrl.com/`
 
 ### Deploy (flujo normal)
 ```bash
@@ -40,15 +44,21 @@ git add .
 git commit -m "descripción del cambio"
 git push
 ```
-GitHub Actions despliega automáticamente vía FTP a Banahosting en ~1 minuto tras cada push.
+GitHub Actions despliega automáticamente vía FTP en ~2-3 min tras cada push.
 
-### Secrets requeridos en GitHub (Settings → Secrets → Actions)
+### Secrets en GitHub (Settings → Secrets → Actions)
 | Secret | Valor |
 |--------|-------|
-| FTP_HOST | servidor.banahosting.com |
-| FTP_USER | usuario FTP del cPanel |
-| FTP_PASS | contraseña FTP |
-| FTP_DIR | /public_html/ (o la carpeta del dominio) |
+| FTP_HOST | servidor Banahosting |
+| FTP_USER | usuario cPanel |
+| FTP_PASS | contraseña cPanel |
+| FTP_DIR | `paniaguaramirezsrl.com/` |
+
+### Workflow
+- Archivo: `.github/workflows/deploy.yml`
+- Usa `SamKirkland/FTP-Deploy-Action@v4.3.5`
+- `dangerous-clean-slate: true` — sube todos los archivos en cada deploy
+- Excluye: `.git*`, `CLAUDE.md`, `.DS_Store`, `.nojekyll`, `.gitignore`
 
 ---
 
@@ -60,20 +70,45 @@ GitHub Actions despliega automáticamente vía FTP a Banahosting en ~1 minuto tr
 ├── servicios.html      — 6 servicios detallados
 ├── nosotros.html       — Sobre la firma + Misión/Visión/Valores
 ├── proceso.html        — 3 pasos + FAQ acordeón
-├── contacto.html       — Formulario → WhatsApp + info de contacto
-├── .nojekyll           — Evita que GitHub Pages procese con Jekyll
+├── contacto.html       — Formulario email (POST → send_mail.php) + info de contacto
+├── gracias.html        — Página de confirmación tras envío del formulario
+├── 404.html            — Página de error 404 (SEO optimizada)
+├── send_mail.php       — Mailer PHP: recibe POST, envía a info@paniaguaramirezsrl.com
+├── .htaccess           — ErrorDocument 404 /404.html
 ├── CLAUDE.md           — Este archivo
 └── assets/
     ├── css/
     │   └── style.css   — CSS compartido entre todas las páginas
     ├── js/
-    │   └── contacto.js — Lógica del formulario de contacto → WhatsApp
+    │   └── contacto.js — (vacío — formulario usa POST nativo a send_mail.php)
     └── img/
         ├── logo.png          — Logo principal (navbar)
         ├── icono-footer.png  — Ícono 75×75px en footer
         ├── slider01.jpg      — Foto hero slide 1
         └── slider02.jpg      — Foto hero slide 2
 ```
+
+---
+
+## REDES SOCIALES
+
+Aparecen en **todas las páginas** (header topbar + footer columna Contacto):
+- Facebook: https://www.facebook.com/paniaguaramirezsrl
+- Instagram: https://www.instagram.com/paniaguaramirezsrl
+- WhatsApp: https://wa.me/18298013142
+
+Íconos: Font Awesome — `fa-brands fa-facebook-f`, `fa-brands fa-instagram`, `fa-brands fa-whatsapp`
+
+---
+
+## FORMULARIO DE CONTACTO
+
+- Archivo form: `contacto.html` — `<form action="send_mail.php" method="POST">`
+- Campos con `name=""`: nombre, empresa, telefono, correo, servicio, mensaje
+- Backend: `send_mail.php` → sanitiza, valida, envía con `mail()` a `info@paniaguaramirezsrl.com`
+- Éxito → redirige a `gracias.html`
+- Error → redirige a `contacto.html?error=campos` o `?error=envio`
+- **NUNCA usar `_external=True` en URLs** — guardar siempre rutas relativas
 
 ---
 
@@ -103,60 +138,38 @@ GitHub Actions despliega automáticamente vía FTP a Banahosting en ~1 minuto tr
 ## PÁGINAS — CONTENIDO POR PÁGINA
 
 ### index.html — Inicio
-- Topbar con teléfono, email y WhatsApp
-- Navbar con logo + 5 links + botón "Consulta gratis"
-- Hero carousel 2 slides (imágenes full-width: slider01.jpg / slider02.jpg)
-- Feature strip (4 pilares: Confidencialidad, DGII, 6 áreas, Atención directa)
+- Topbar: teléfono · email · horario · Facebook · Instagram · WhatsApp
+- Navbar: logo + 5 links + botón "Consulta gratis"
+- Hero carousel 2 slides (slider01.jpg / slider02.jpg)
+- Feature strip (4 pilares)
 - Preview 3 servicios + botón "Ver todos"
-- About teaser con carousel de 4 fotos (Unsplash) + badge
+- About teaser con carousel 4 fotos + badge
 - CTA banner → WhatsApp
 
 ### servicios.html — Servicios
-- Page hero (banner azul con título)
-- 6 service cards completas con descripción extendida
-- Feature strip
-- CTA banner
+- Page hero + 6 service cards + feature strip + CTA banner
 
 ### nosotros.html — Nosotros
-- Page hero
-- About completo (texto + carousel 4 fotos) + badge
-- MVV cards: Misión / Visión / Valores
-- CTA banner
+- Page hero + About completo + MVV cards + CTA banner
 
 ### proceso.html — Cómo trabajamos
-- Page hero
-- 3 pasos con listas de detalle (Diagnóstico / Organización / Acompañamiento)
-- FAQ con acordeón Bootstrap (5 preguntas)
-- CTA banner
+- Page hero + 3 pasos + FAQ acordeón + CTA banner
 
 ### contacto.html — Contacto
 - Page hero
-- 3 tarjetas de info (teléfono, email, horario)
-- Formulario que arma mensaje y abre WhatsApp (`contacto.js`)
-- Botón directo WhatsApp + botón correo electrónico
+- 3 tarjetas info (teléfono, email, horario)
+- Formulario POST → send_mail.php (nombre, empresa, teléfono, correo, servicio, mensaje)
+- Card WhatsApp directo + card correo
 
----
+### gracias.html — Confirmación
+- Logo + ícono check verde
+- Mensaje: "Muchas gracias por contactarnos. En breve le contactaremos para asistirle."
+- Botones: WhatsApp + Volver al inicio
 
-## COMPONENTES CLAVE
-
-### Hero slider (index.html)
-- Imágenes de fondo a pantalla completa (`object-fit: cover`)
-- Overlay oscuro degradado (80% → 45% de izquierda a derecha)
-- Layout dos columnas: título izquierda / descripción+botones derecha
-- Efecto Ken Burns en la foto activa (zoom sutil 8s)
-- Textos siempre en blanco — `.hero-content h1 { color: #fff; }`
-
-### About carousel (index.html y nosotros.html)
-- Bootstrap carousel con 4 fotos Unsplash
-- IDs únicos: `aboutCarouselHome` / `aboutCarouselNosotros`
-- Badge flotante con nombre de la firma
-- En mobile: altura fija 260px (no aspect-ratio)
-
-### Formulario de contacto (contacto.js)
-- Lee campos: nombre, empresa, teléfono, servicio, mensaje
-- Valida campos requeridos (nombre, teléfono, mensaje)
-- Construye mensaje con formato WhatsApp (*negrita*)
-- Abre `wa.me/18298013142?text=...` en nueva pestaña
+### 404.html — Error 404
+- SEO: `noindex, follow` + canonical a inicio
+- Número 404 grande + links a todas las páginas
+- Activado via `.htaccess`: `ErrorDocument 404 /404.html`
 
 ---
 
@@ -165,67 +178,55 @@ GitHub Actions despliega automáticamente vía FTP a Banahosting en ~1 minuto tr
 | Breakpoint | Cambios principales |
 |---|---|
 | ≤ 991px (tablet) | Hero apilado, about-badge estático, nav-logo 44px |
-| ≤ 767px (mobile) | Topbar 1 línea (tel + WA), logo 114px, hero padding 20px laterales, carousel altura fija |
-| ≤ 480px (mobile xs) | Hero más compacto, logo 80px, carousel 210px |
-
-### Reglas anti-overflow
-```css
-html, body { overflow-x: hidden; max-width: 100%; }
-```
-Aplicado globalmente para evitar scroll horizontal.
-
-### Topbar en mobile
-- Solo muestra: teléfono (izquierda) + ícono WhatsApp (derecha)
-- Ocultos: email, divisor `|`, horario
+| ≤ 767px (mobile) | Topbar 1 línea, logo 114px, hero padding 20px, carousel altura fija |
+| ≤ 480px (mobile xs) | Hero compacto, logo 80px, carousel 210px |
 
 ---
 
 ## ERRORES CONOCIDOS Y SOLUCIONES
 
-### E-001: Texto del hero pegado al borde izquierdo en mobile
-**Causa:** Bootstrap container tiene padding mínimo en xs y el texto largo desborda.
+### E-001: Texto del hero pegado al borde en mobile
 **Fix:** `padding: 52px 20px 44px !important` en `.hero-content` a ≤767px.
 
-### E-002: Títulos h1/h2 azul oscuro sobre fondo hero
-**Causa:** Regla global `h1,h2 { color: var(--text-dark) }` tiene más especificidad que el color heredado.
-**Fix:** Declarar `color: #fff` explícito en `.hero-content h1`.
+### E-002: Títulos h1/h2 azul oscuro sobre hero
+**Fix:** `color: #fff` explícito en `.hero-content h1`.
 
-### E-003: GitHub Pages muestra 404
-**Causa:** Pages intentaba procesar con Jekyll o Source no configurado.
-**Fix:** Archivo `.nojekyll` en raíz + workflow "Static HTML" en GitHub Actions.
+### E-003: FTP_DIR incorrecto → archivos van a carpeta equivocada
+**Causa:** Poner ruta absoluta `/home/mybcfcli/paniaguaramirezsrl.com` en FTP_DIR.
+**Fix:** FTP ya conecta en `/home/mybcfcli/` — usar solo `paniaguaramirezsrl.com/` (relativo).
 
-### E-004: Push rechazado (fetch first)
-**Causa:** GitHub creó commit del workflow desde la UI web.
-**Fix:** `git pull --rebase origin main && git push`
+### E-004: SamKirkland solo sube archivos "nuevos" ignorando los subidos manualmente
+**Fix:** `dangerous-clean-slate: true` en el workflow — borra y re-sube todo.
 
 ### E-005: Scroll horizontal en mobile
-**Causa:** Elementos con `width: 100vw` o sin `overflow-x: hidden`.
 **Fix:** `html, body { overflow-x: hidden; max-width: 100%; }`
 
 ---
 
-## LOG DE SESIÓN
+## LOG DE SESIONES
 
-### 2026-07-20 — Construcción completa desde cero
+### 2026-07-20 — Sesión 1: Construcción completa desde cero
+1. Convertida a web multi-página: 5 HTML independientes
+2. CSS extraído a `assets/css/style.css`
+3. Hero slider full-width con overlay + layout dos columnas
+4. About media: carousel 4 fotos + badge
+5. Logo navbar + ícono footer en todas las páginas
+6. Imágenes propias: slider01.jpg, slider02.jpg, logo.png, icono-footer.png
+7. Responsive: 4 breakpoints
 
-**Punto de partida:** `index.html` landing page de una sola página.
-
-**Lo construido:**
-1. Convertida a web multi-página: 5 archivos HTML independientes
-2. CSS extraído a `assets/css/style.css` (compartido)
-3. JS de contacto extraído a `assets/js/contacto.js`
-4. Hero slider: imágenes full-width con overlay + layout dos columnas
-5. About media: slider de 4 fotos en lugar de placeholder con play button
-6. Logo en navbar (todos los archivos) y footer
-7. Ícono 75×75 en footer (todos los archivos)
-8. Imágenes propias del cliente: slider01.jpg, slider02.jpg, logo.png, icono-footer.png
-9. Responsive completo: 4 breakpoints, topbar simplificado en mobile
-10. Deploy en GitHub Pages con workflow Static HTML
-11. Fixes: .nojekyll, overflow-x, hero padding, color títulos hero
+### 2026-07-20 — Sesión 2: Mejoras y deploy a Banahosting
+1. Redes sociales (Facebook + Instagram) en topbar y footer de las 5 páginas
+2. Formulario de contacto: cambiado de WhatsApp-only a POST → send_mail.php → info@paniaguaramirezsrl.com
+3. `gracias.html`: página de confirmación con logo + mensaje de agradecimiento
+4. `404.html`: página de error SEO optimizada (noindex, follow + links internos)
+5. `.htaccess`: `ErrorDocument 404 /404.html`
+6. Deploy: migrado de GitHub Pages a Banahosting FTP via SamKirkland/FTP-Deploy-Action
+7. Fix FTP_DIR: `paniaguaramirezsrl.com/` (relativo, no absoluto)
+8. Fix re-upload: `dangerous-clean-slate: true` para forzar subida completa
 
 **Pendientes para próximas sesiones:**
+- Verificar que send_mail.php funciona en producción (PHP mail() de cPanel)
 - Agregar dirección física si el cliente la proporciona
 - Fotos reales del equipo en sección Nosotros
 - Testimonios de clientes
-- Google Analytics / Meta Pixel si se requiere tracking
-- Dominio personalizado (Custom domain en GitHub Pages)
+- Google Analytics / Meta Pixel
