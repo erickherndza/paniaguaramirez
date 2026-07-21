@@ -2,11 +2,15 @@
 # Paniagua Ramírez — Seguridad Apache
 # ================================================================
 
-# Redirigir HTTP → HTTPS
+# Redirigir HTTP → HTTPS y non-www → www
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    # Primero forzar HTTPS
     RewriteCond %{HTTPS} off
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    # Luego forzar www
+    RewriteCond %{HTTP_HOST} !^www\. [NC]
+    RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </IfModule>
 
 # ── Cabeceras de seguridad ──────────────────────────────────────
