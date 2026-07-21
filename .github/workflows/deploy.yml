@@ -23,9 +23,6 @@ jobs:
       - name: Instalar lftp
         run: sudo apt-get install -y lftp
 
-      - name: Mostrar directorio de trabajo
-        run: ls -la
-
       - name: Deploy FTP → Banahosting
         env:
           FTP_HOST: ${{ secrets.FTP_HOST }}
@@ -41,13 +38,13 @@ jobs:
             set net:max-retries 5;
             open $FTP_HOST;
             mirror --reverse --verbose \
-              --exclude-glob .git \
-              --exclude-glob .github \
-              --exclude-glob .DS_Store \
-              --exclude-glob .nojekyll \
-              --exclude-glob CLAUDE.md \
-              --exclude-glob .gitignore \
-              . $FTP_DIR;
+              --exclude '\.git/' \
+              --exclude '\.github/' \
+              --exclude '\.DS_Store' \
+              --exclude '\.nojekyll' \
+              --exclude 'CLAUDE\.md' \
+              --exclude '\.gitignore' \
+              ./ $FTP_DIR/;
             quit
           "
           rm -f ~/.netrc
