@@ -21,14 +21,15 @@
 - Font Awesome 6.5.1
 - Google Fonts: Poppins + Inter
 - Sin backend — sitio estático puro
-- Deploy: GitHub Pages
+- Deploy: GitHub Actions → FTP → Banahosting (cPanel)
+- PHP: send_mail.php (mail() nativo de cPanel)
 
 ---
 
 ## REPOSITORIO Y URL
 
 - **GitHub:** https://github.com/erickherndza/paniaguaramirez
-- **URL pública:** https://erickherndza.github.io/paniaguaramirez/
+- **URL pública:** https://paniaguaramirezsrl.com/
 - **Branch:** main
 - **Remote local:** origin
 
@@ -39,7 +40,15 @@ git add .
 git commit -m "descripción del cambio"
 git push
 ```
-GitHub Actions despliega automáticamente en ~2 minutos tras cada push.
+GitHub Actions despliega automáticamente vía FTP a Banahosting en ~1 minuto tras cada push.
+
+### Secrets requeridos en GitHub (Settings → Secrets → Actions)
+| Secret | Valor |
+|--------|-------|
+| FTP_HOST | servidor.banahosting.com |
+| FTP_USER | usuario FTP del cPanel |
+| FTP_PASS | contraseña FTP |
+| FTP_DIR | /public_html/ (o la carpeta del dominio) |
 
 ---
 

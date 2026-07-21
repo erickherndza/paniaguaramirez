@@ -23,7 +23,9 @@
     </div>
     <div class="social">
       <span class="d-none d-md-inline">Lun – Vie, 8:00 am – 5:00 pm</span>
-      <a href="https://wa.me/18298013142" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i></a>
+      <a href="https://www.facebook.com/paniaguaramirezsrl" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/paniaguaramirezsrl" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://wa.me/18298013142" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
     </div>
   </div>
 </div>
@@ -101,27 +103,27 @@
         <div class="contact-form">
           <h3 class="fw-bold mb-1" style="font-size:22px;">Envíenos un mensaje</h3>
           <p class="mb-4" style="font-size:14px;">Complete el formulario y le contactamos a la brevedad, o puede escribirnos directamente por WhatsApp.</p>
-          <form id="contactForm" novalidate>
+          <form id="contactForm" action="send_mail.php" method="POST">
             <div class="row g-3">
               <div class="col-md-6">
                 <label class="form-label">Nombre completo <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="nombre" required placeholder="Su nombre">
+                <input type="text" class="form-control" id="nombre" name="nombre" required placeholder="Su nombre">
               </div>
               <div class="col-md-6">
                 <label class="form-label">Empresa</label>
-                <input type="text" class="form-control" id="empresa" placeholder="Nombre de su empresa">
+                <input type="text" class="form-control" id="empresa" name="empresa" placeholder="Nombre de su empresa">
               </div>
               <div class="col-md-6">
                 <label class="form-label">Teléfono <span class="text-danger">*</span></label>
-                <input type="tel" class="form-control" id="telefono" required placeholder="+1 (809) 000-0000">
+                <input type="tel" class="form-control" id="telefono" name="telefono" required placeholder="+1 (809) 000-0000">
               </div>
               <div class="col-md-6">
                 <label class="form-label">Correo electrónico</label>
-                <input type="email" class="form-control" id="correo" placeholder="correo@empresa.com">
+                <input type="email" class="form-control" id="correo" name="correo" placeholder="correo@empresa.com">
               </div>
               <div class="col-12">
                 <label class="form-label">Servicio de interés</label>
-                <select class="form-select" id="servicio">
+                <select class="form-select" id="servicio" name="servicio">
                   <option value="">Seleccione un servicio</option>
                   <option>Auditoría</option>
                   <option>Impuestos / Declaraciones DGII</option>
@@ -133,14 +135,14 @@
               </div>
               <div class="col-12">
                 <label class="form-label">Mensaje <span class="text-danger">*</span></label>
-                <textarea class="form-control" id="mensaje" rows="4" required placeholder="Cuéntenos brevemente su situación o necesidad..."></textarea>
+                <textarea class="form-control" id="mensaje" name="mensaje" rows="4" required placeholder="Cuéntenos brevemente su situación o necesidad..."></textarea>
               </div>
               <div class="col-12">
                 <button type="submit" class="btn btn-navy rounded-1 w-100 py-2">
-                  <i class="fa-brands fa-whatsapp me-2"></i>Enviar por WhatsApp
+                  <i class="fa-solid fa-paper-plane me-2"></i>Enviar mensaje
                 </button>
                 <p class="text-center mt-3 mb-0" style="font-size:12.5px;color:#9AA9B8;">
-                  Al hacer clic se abrirá WhatsApp con su mensaje prellenado.
+                  Su mensaje llegará directamente a nuestro correo. Le contactamos a la brevedad.
                 </p>
               </div>
             </div>
@@ -207,6 +209,8 @@
         <ul class="list-unstyled footer-links">
           <li><a href="tel:+18298013142"><i class="fa-solid fa-phone me-2"></i>+1 (829) 801-3142</a></li>
           <li><a href="mailto:paniaguaramirezservicios@gmail.com"><i class="fa-solid fa-envelope me-2"></i>paniaguaramirezservicios@gmail.com</a></li>
+          <li><a href="https://www.facebook.com/paniaguaramirezsrl" target="_blank" rel="noopener"><i class="fa-brands fa-facebook-f me-2"></i>Facebook</a></li>
+          <li><a href="https://www.instagram.com/paniaguaramirezsrl" target="_blank" rel="noopener"><i class="fa-brands fa-instagram me-2"></i>Instagram</a></li>
         </ul>
       </div>
     </div>
