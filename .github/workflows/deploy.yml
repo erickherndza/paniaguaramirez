@@ -20,18 +20,33 @@ jobs:
       - name: Descargar repositorio
         uses: actions/checkout@v4
 
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USER }}
-          password: ${{ secrets.FTP_PASS }}
-          server-dir: ${{ secrets.FTP_DIR }}
-          dangerous-clean-slate: true
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/CLAUDE.md
-            **/.DS_Store
-            **/.nojekyll
-            **/.gitignore
+      - name: Instalar lftp
+        run: sudo apt-get install -y lftp
+
+      - name: Deploy via lftp
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASS }}
+          FTP_DIR: ${{ secrets.FTP_DIR }}
+        run: |
+          printf '%s\n' \
+            "set ftp:ssl-allow yes" \
+            "set ftp:ssl-protect-data yes" \
+            "set ssl:verify-certificate no" \
+            "set net:timeout 60" \
+            "set net:max-retries 5" \
+            "set net:reconnect-interval-base 5" \
+            "open -u $FTP_USER,$FTP_PASS ftp://$FTP_HOST" \
+            "lcd $GITHUB_WORKSPACE" \
+            "mirror --reverse --delete --no-perms --verbose \
+              --exclude-glob .git \
+              --exclude-glob .github \
+              --exclude-glob .gitignore \
+              --exclude-glob CLAUDE.md \
+              --exclude-glob .DS_Store \
+              --exclude-glob .nojekyll \
+              . $FTP_DIR" \
+            "bye" \
+            > /tmp/lftp_cmds.txt
+          lftp -f /tmp/lftp_cmds.txt
