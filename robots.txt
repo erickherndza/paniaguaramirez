@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Páginas internas sin valor SEO
+Disallow: /gracias.html
+Disallow: /404.html
+
+# Sitemap
+Sitemap: https://paniaguaramirezsrl.com/sitemap.xml
